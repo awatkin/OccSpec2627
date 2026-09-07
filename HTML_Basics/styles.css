@@ -1,0 +1,30 @@
+body {
+    background:white;
+    color:#005555;
+}
+
+p {
+    color:deeppink;
+}
+
+table {
+    border:solid 1px black;
+}
+
+#index {
+    color:black;
+}
+
+#p1 {
+    color:orangered;
+}
+
+.p2 {
+    color:cornflowerblue;
+}
+
+td {
+    border: 1px solid red;
+    padding:10px;
+    margin:20px;
+}
