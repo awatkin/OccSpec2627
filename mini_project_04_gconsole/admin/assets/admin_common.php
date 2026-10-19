@@ -59,12 +59,36 @@ function console_insert($conn){
     return true; // Registration successful
 }
 
-function dev_insert(){
+function dev_insert($conn){
+    $sql = "INSERT INTO dev (name, location, date_added) VALUES (?, ?, ?)";  //prepare the sql to be sent
+    $stmt = $conn->prepare($sql); //prepare to sql
 
+    $currentDate = date('Y-m-d');
+
+    $stmt->bindParam(1, $_POST['name']);  //bind parameters for security
+    // Hash the password
+    $stmt->bindParam(2, $_POST['location']);
+    $stmt->bindParam(3, $currentDate);
+
+    $stmt->execute();  //run the query to insert
+    $conn = null;  // closes the connection so cant be abused.
+    return true; // Registration successful
 }
 
-function pub_insert(){
+function pub_insert($conn){
+    $sql = "INSERT INTO pub (name, location, date_added) VALUES (?, ?, ?)";  //prepare the sql to be sent
+    $stmt = $conn->prepare($sql); //prepare to sql
 
+    $currentDate = date('Y-m-d');
+
+    $stmt->bindParam(1, $_POST['name']);  //bind parameters for security
+
+    $stmt->bindParam(2, $_POST['location']);
+    $stmt->bindParam(3, $currentDate);
+
+    $stmt->execute();  //run the query to insert
+    $conn = null;  // closes the connection so cant be abused.
+    return true; // Registration successful
 }
 
 function game_insert(){
