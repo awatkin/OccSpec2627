@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+nav ul {
+    list-style-type: none;  /* removes the bullet points */
+    margin: 0;  /* removes any margin */
+    padding: 0; /* removes any padding */
+    display: flex; /* Makes the list items a flex container */
+    justify-content: flex-start; /* Aligns items to the start of the container */
+    background-color: #333; /* Adds a background color */
+}
+
+nav li {
+    margin: 0 10px 0 10px;
+}
+
+body { /*  this will style the background and the font */
+    background-color: mediumseagreen;
+    font-family: Arial, Helvetica, sans-serif;
+}
