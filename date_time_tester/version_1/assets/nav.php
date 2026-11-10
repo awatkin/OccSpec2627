@@ -1,4 +1,5 @@
 <?php
+
 echo "<div class='navi'>";
 echo "<nav>";  #decales
 

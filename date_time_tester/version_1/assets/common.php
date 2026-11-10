@@ -39,3 +39,20 @@ function reg_user($conn){
     $conn = null;  // closes the connection so cant be abused.
     return true; // Registration successful
 }
+
+function login($conn, $email){
+    $sql = "SELECT patientid, password FROM patient WHERE email = ?"; //set up the sql statement
+    $stmt = $conn->prepare($sql); //prepares
+    $stmt->bindParam(1,$email);  //binds the parameters to execute
+    $stmt->execute(); //run the sql code
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings back results
+    $conn = null;  // nulls off the connection so cant be abused.
+
+    if($result){  // if there is a result returned
+        return $result;
+
+    } else {
+        return false;
+    }
+
+}
