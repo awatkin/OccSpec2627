@@ -10,24 +10,34 @@ if (isset($_SESSION['userid'])) {
     header("Location: index.php");
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usr = login(dbconn(), $_POST["email"]);
+    try {
+        $usr = login(dbconn(), $_POST["email"]);
 
-    if ($usr && password_verify($_POST["password"], $usr["password"])) { // verifies the password is matched
-        $_SESSION["userid"] = $usr["patientid"];
-        $_SESSION['usermessage'] = "SUCCESS: User Successfully Logged In ";
-        header("location:index.php");  //redirect on success
+        if ($usr && password_verify($_POST["password"], $usr["password"])) { // verifies the password is matched
+            $_SESSION["userid"] = $usr["patientid"];
+            $_SESSION['usermessage'] = "SUCCESS: User Successfully Logged In ";
+            header("location:index.php");  //redirect on success
+            exit;
+        } elseif (!$usr) {
+            $_SESSION['usermessage'] = "ERROR: User not found";
+            header("Location: login.php");
+            exit; // Stop further execution
+        } else {
+            $_SESSION['usermessage'] = "ERROR: User login passwords not match";
+            header("Location: login.php");
+            exit; // Stop further execution
+
+        }
+    } catch (PDOException $e) {
+        $_SESSION['usermessage'] = "ERROR: " . $e->getMessage();
+        header("Location: login.php");
         exit;
-    } elseif(!$usr) {
-        $_SESSION['usermessage'] = "ERROR: User not found";
+    } catch (Exception $e) {
+        $_SESSION['usermessage'] = "ERROR: " . $e->getMessage();
         header("Location: login.php");
-        exit; // Stop further execution
-    }else {
-        $_SESSION['usermessage'] = "ERROR: User login passwords not match";
-        header("Location: login.php");
-        exit; // Stop further execution
-
+        exit;
     }
-}
+    }
 ?>
 
 <!DOCTYPE html>
