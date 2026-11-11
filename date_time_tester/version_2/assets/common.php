@@ -56,3 +56,40 @@ function login($conn, $email){
     }
 
 }
+
+function pro_getter($conn){
+    // function to get all the staff suitable for an appointment
+
+    $sql = "SELECT * FROM professional";
+    //get all admin from datbase where role NOT equal to "adm" - this is admin role, none bookable
+    $stmt = $conn->prepare($sql);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $conn = null;
+    return $result;
+}
+
+function make_booking($conn){
+    $dt = new DateTime($_POST['appt-time']);
+    $mysql_datetime = $dt->format('Y-m-d H:i:s');
+
+    $bookedon = "";
+    $notes = "";
+
+    $sql = "INSERT INTO appointment (datetime, bookedon, notes, proid, patientid) VALUES (?, ?, ?, ?, ?)";  //prepare the sql to be sent
+    $stmt = $conn->prepare($sql); //prepare to sql
+
+    $stmt->bindParam(1, $mysql_datetime);  //bind parameters for security
+    // Hash the password
+    $stmt->bindParam(2, $bookedon);
+    $stmt->bindParam(3, $notes);
+    $stmt->bindParam(4, $_POST['professional']);
+
+
+
+    $stmt->execute();  //run the query to insert
+    $conn = null;  // closes the connection so cant be abused.
+    return true; // Registration successful
+
+}

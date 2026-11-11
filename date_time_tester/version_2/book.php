@@ -12,21 +12,25 @@ if (!isset($_SESSION['userid'])) {
 
     try {
 
-        $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];
-        $epoch_time = strtotime($tmp);
-        if(commit_booking(dbconnect_insert(),$epoch_time)){
+        if(make_booking(dbconn())){
             $_SESSION['usermessage'] = "SUCCESS: YOUR Booking has been made!";
             header("Location: bookings.php");
             exit;
         } else {
             $_SESSION['usermessage'] = "ERROR: Booking has failed!";
+            header("Location: book.php");
+            exit;
         }
 
     }
     catch (PDOException $e){
         $_SESSION['usermessage'] = "ERROR: " . $e->getMessage();
+        header("Location: book.php");
+        exit;
     } catch(Exception $e){
         $_SESSION['usermessage'] = "ERROR: " . $e->getMessage();
+        header("Location: book.php");
+        exit;
     }
 }
 ?>
@@ -38,7 +42,7 @@ if (!isset($_SESSION['userid'])) {
 
 <head>
 
-<title> Version 1</title>
+<title> Version 2</title>
 <link rel='stylesheet' type='text/css' href='../version_1/assets/styles.css' />
 
 </head>
@@ -64,38 +68,30 @@ require_once "assets/nav.php";
 <form action='' method='post'>
 
 
-
-
     <label for="appt-time">Choose a time for your appointment:</label>
 
     <input
         type="datetime-local"
-        id="apt-time"
-        name="apt-time"
+        id="appt-time"
+        name="appt-time"
  />
 
 <br>
-<select name='admin'>
+<select name='professional'>
 
     <?php
 
-$staff = staf_geter(dbconn());
+$pro = pro_getter(dbconn());
 
-foreach ($staff as $staf){
+foreach ($pro as $staf){
 
-    if ($staf['role'] = "doc"){
-        $role = "Doctor";
-    } else if ($staf['role'] = "nur"){
-        $role = "Nurse";
-    }
-    echo "<option value =".$staf['staffid']. ">" .$role." ".$staf['sname']." ".
-        $staf['fname']." Room ".$staf['room']."</option>";
+    echo "<option value =".$staf['proid']. ">" . $staf['role'] . " " . $staf['fname']." ".
+        $staf['sname']." - Room ".$staf['roomno']."</option>";
 }
 ?>
 </select>
 
 <br>
-
 
 <input type='submit' name='submit' value='Book Appointment' />
 
